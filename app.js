@@ -1,14 +1,20 @@
 // ── API KEY MANAGEMENT ──────────────────────────────────────────────────────
 function saveKey() {
-  const key = document.getElementById('api-key-input').value.trim();
-  if (!key) {
-    alert('Por favor, introduce tu API key de Gemini.');
-    return;
+  const input = document.getElementById('api-key-input');
+  const key = input.value.trim();
+  if (key) {
+    localStorage.setItem('gemini_api_key', key);
+    
+    // Ocultamos el bloqueo y mostramos la app
+    document.getElementById('api-overlay').style.display = 'none';
+    document.getElementById('app').style.display = 'flex';
+    
+    // Inicializamos las empresas y el saludo de bienvenida
+    if (typeof initCompanies === 'function') initCompanies();
+    if (typeof generateRandomGreeting === 'function') generateRandomGreeting();
+  } else {
+    alert('Por favor, introduce una API key válida.');
   }
-  localStorage.setItem('gemini_key', key);
-  document.getElementById('api-overlay').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  initCompanies();
 }
 
 function clearKey() {
@@ -21,14 +27,13 @@ function getKey() {
 }
 
 // ── INIT ─────────────────────────────────────────────────────────────────────
-// ── INIT ─────────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
-  const key = getKey();
+  const key = localStorage.getItem('gemini_api_key'); // o tu función getKey()
   if (key) {
     document.getElementById('api-overlay').style.display = 'none';
     document.getElementById('app').style.display = 'flex';
-    initCompanies();
-    generateRandomGreeting(); // <-- Inyectamos el saludo aleatorio al entrar
+    if (typeof initCompanies === 'function') initCompanies();
+    if (typeof generateRandomGreeting === 'function') generateRandomGreeting();
   }
 });
 
