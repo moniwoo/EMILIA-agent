@@ -1,29 +1,60 @@
-// ── API KEY MANAGEMENT ──────────────────────────────────────────────────────
+// ==========================================
+// CONTROL DE ACCESO Y API KEY (EMILIA)
+// ==========================================
+
 function saveKey() {
   const input = document.getElementById('api-key-input');
+  if (!input) {
+    console.error("No se encontró el campo 'api-key-input' en el HTML.");
+    return;
+  }
+  
   const key = input.value.trim();
   if (key) {
     localStorage.setItem('gemini_api_key', key);
-    
-    // Ocultamos el bloqueo y mostramos la app
-    document.getElementById('api-overlay').style.display = 'none';
-    document.getElementById('app').style.display = 'flex';
-    
-    // Inicializamos las empresas y el saludo de bienvenida
-    if (typeof initCompanies === 'function') initCompanies();
-    if (typeof generateRandomGreeting === 'function') generateRandomGreeting();
+    launchApp();
   } else {
-    alert('Por favor, introduce una API key válida.');
+    alert('Por favor, introduce una API key de Gemini válida.');
   }
 }
 
-function clearKey() {
-  localStorage.removeItem('gemini_key');
-  location.reload();
+function launchApp() {
+  const overlay = document.getElementById('api-overlay');
+  const appContainer = document.getElementById('app');
+  
+  // Mostramos la aplicación de forma segura
+  if (overlay) overlay.style.display = 'none';
+  if (appContainer) appContainer.style.display = 'flex';
+  
+  // Ejecutamos las inicializaciones con protección por si alguna función no existe
+  try {
+    if (typeof initCompanies === 'function') {
+      initCompanies();
+    }
+  } catch (e) {
+    console.warn("Aviso en initCompanies:", e);
+  }
+
+  try {
+    if (typeof generateRandomGreeting === 'function') {
+      generateRandomGreeting();
+    }
+  } catch (e) {
+    console.warn("Aviso en generateRandomGreeting:", e);
+  }
 }
 
-function getKey() {
-  return localStorage.getItem('gemini_key');
+// Verificar si ya está logueada al cargar la página
+window.addEventListener('DOMContentLoaded', () => {
+  const key = localStorage.getItem('gemini_api_key');
+  if (key) {
+    launchApp();
+  }
+});
+
+function clearKey() {
+  localStorage.removeItem('my-carla-gemini-key');
+  location.reload();
 }
 
 // ── INIT ─────────────────────────────────────────────────────────────────────
