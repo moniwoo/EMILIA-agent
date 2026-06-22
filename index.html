@@ -1,17 +1,35 @@
-<div class="content">
 
+
+<!-- PANTALLA DE BIENVENIDA DINÁMICA CENTRADA Y CORREGIDA (ESTILO EMILIA) -->
       <div id="welcome-screen" class="welcome-container">
+        <!-- Icono de destellos mágicos de IA -->
+        <div class="welcome-sparkles">
+          <i class="ti ti-sparkles"></i>
+        </div>
+        
         <h1 class="welcome-title"><span id="welcome-greeting">¡Hola, Moni!</span></h1>
-        <p class="welcome-sub" id="welcome-message">Qué alegría verte de nuevo. ¿Qué vamos a diseñar u optimizar hoy?</p>
+        <p class="welcome-sub" id="welcome-message">Soy Emilia, tu mentora de ingeniería. ¿Qué vamos a diseñar u optimizar hoy?</p>
         
         <div class="welcome-suggestions">
-          <div class="suggestion-card" onclick="switchPanel('post', document.querySelector('[data-panel=\'post\']'))">
+          <!-- Tarjeta 1: Redacción -->
+          <div class="suggestion-card" onclick="document.querySelector('[data-panel=\'post\']').click();">
             <i class="ti ti-edit"></i>
-            <span>Redactar un nuevo post para LinkedIn con tu voz</span>
+            <span>Redactar un nuevo post con tu voz</span>
           </div>
-          <div class="suggestion-card" onclick="switchPanel('study', document.querySelector('[data-panel=\'study\']'))">
+          <!-- Tarjeta 2: Tendencias -->
+          <div class="suggestion-card" onclick="document.querySelector('[data-panel=\'trends\']').click();">
+            <i class="ti ti-trending-up"></i>
+            <span>Analizar tendencias de mercado</span>
+          </div>
+          <!-- Tarjeta 3: Seguimiento -->
+          <div class="suggestion-card" onclick="document.querySelector('[data-panel=\'tracking\']').click();">
+            <i class="ti ti-building"></i>
+            <span>Monitorear empresas y vacantes</span>
+          </div>
+          <!-- Tarjeta 4: Estudio -->
+          <div class="suggestion-card" onclick="document.querySelector('[data-panel=\'study\']').click();">
             <i class="ti ti-school"></i>
-            <span>Generar un simulacro de examen técnico</span>
+            <span>Preparar simulacro o material técnico</span>
           </div>
         </div>
       </div>
