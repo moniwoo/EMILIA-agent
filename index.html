@@ -92,9 +92,10 @@
         </div>
       </div>
 
+      <!-- TRENDS -->
       <div class="panel hidden" id="panel-trends">
         <div class="card">
-          <div class="card-label">Sectores monitorizados</div>
+          <div class="card-label">Sectores base monitorizados</div>
           <div class="tags">
             <span class="tag">Aerospace & Defense</span>
             <span class="tag">IA aplicada</span>
@@ -102,7 +103,11 @@
             <span class="tag">Digital twins</span>
             <span class="tag">Computer Vision</span>
           </div>
-          <input type="text" id="trends-extra" placeholder="Añadir tema extra (opcional)..." />
+          
+          <!-- NUEVA BARRA DE BÚSQUEDA ESPECÍFICA -->
+          <div class="card-label" style="margin-top:0.75rem">Filtrar por aspecto específico (Opcional)</div>
+          <input type="text" id="trends-focus" placeholder="Ej: hidrógeno verde, propulsión eléctrica, regulación de drones..." />
+          
           <div class="card-label" style="margin-top:0.75rem">Periodo</div>
           <select id="trends-period">
             <option value="semana">Última semana</option>
@@ -113,7 +118,8 @@
         </div>
         <div id="trends-result" class="card hidden">
           <div class="card-label">Resumen de tendencias</div>
-          <div class="result-box" id="trends-output"></div>
+          <!-- Cambiado a div para renderizar HTML visual -->
+          <div class="result-html-box" id="trends-output"></div>
           <div class="btn-row">
             <button class="btn" onclick="copyText('trends-output')"><i class="ti ti-copy"></i> Copiar</button>
             <button class="btn btn-primary" onclick="trendToPost()"><i class="ti ti-edit"></i> Convertir en post</button>
@@ -163,6 +169,8 @@
     </div>
   </div>
 </div>
+      
+<!-- TRACKING -->
       <div class="panel hidden" id="panel-tracking">
         <div class="card">
           <div class="card-label">Empresas en seguimiento</div>
@@ -173,14 +181,17 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-label">Generar informe</div>
-          <p class="muted">CARLA buscará noticias recientes, movimientos y oportunidades de las empresas en tu lista.</p>
+          <div class="card-label">Enfoque u objetivo del informe</div>
+          <!-- NUEVA BARRA DE BÚSQUEDA PARA SEGUIMIENTO -->
+          <input type="text" id="tracking-focus" placeholder="Ej: nuevas ofertas de prácticas remuneradas, contratos de defensa, vacantes en Sevilla..." />
+          
           <div style="height:0.75rem"></div>
-          <button class="btn btn-primary" onclick="getTracking()"><i class="ti ti-report-analytics"></i> Generar informe</button>
+          <button class="btn btn-primary" onclick="getTracking()"><i class="ti ti-report-analytics"></i> Generar informe enfocado</button>
         </div>
         <div id="tracking-result" class="card hidden">
-          <div class="card-label">Informe de seguimiento</div>
-          <div class="result-box" id="tracking-output"></div>
+          <div class="card-label">Informe de seguimiento estratégico</div>
+          <!-- Cambiado a div para renderizar HTML visual -->
+          <div class="result-html-box" id="tracking-output"></div>
           <div class="btn-row">
             <button class="btn" onclick="copyText('tracking-output')"><i class="ti ti-copy"></i> Copiar</button>
             <button class="btn btn-primary" onclick="trackingToPost()"><i class="ti ti-edit"></i> Generar post</button>
