@@ -40,12 +40,26 @@ const PANEL_META = {
 };
 
 function switchPanel(id, el) {
-  document.querySelectorAll('.panel').forEach(p => { p.style.display = 'none'; p.classList.remove('active'); });
+  // Ocultamos todos los paneles añadiendo 'hidden' y quitando 'active'
+  document.querySelectorAll('.panel').forEach(p => { 
+    p.classList.add('hidden'); 
+    p.classList.remove('active'); 
+  });
+  
+  // Quitamos la clase activa de todos los botones de la barra lateral
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  
+  // Activamos el panel correspondiente
   const panel = document.getElementById('panel-' + id);
-  panel.style.display = 'block';
-  panel.classList.add('active');
+  if (panel) {
+    panel.classList.remove('hidden');
+    panel.classList.add('active');
+  }
+  
+  // Activamos el botón de la barra lateral
   el.classList.add('active');
+  
+  // Cambiamos los textos de la barra superior
   document.getElementById('topbar-title').textContent = PANEL_META[id].title;
   document.getElementById('topbar-sub').textContent = PANEL_META[id].sub;
 }
