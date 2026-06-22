@@ -99,7 +99,8 @@ async function callGemini(promptText, outputElementId, resultCardId) {
 
   try {
     // URL actualizada a la API oficial v1 con el modelo estable
-const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {      headers: { "Content-Type": "application/json" },
+const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {      
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{ parts: [{ text: promptText }] }]
       })
