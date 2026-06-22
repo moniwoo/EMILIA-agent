@@ -202,16 +202,24 @@ function trendToPost() {
 }
 
 // ── EVENTS MODULE ─────────────────────────────────────────────────────────────
+// ── EVENTS MODULE ─────────────────────────────────────────────────────────────
 async function getEvents() {
   showLoading('events-output', 'events-result');
 
-  const geo = document.getElementById('events-geo').value;
+  const country = document.getElementById('events-country').value;
+  const region = document.getElementById('events-region').value.trim();
   const horizon = document.getElementById('events-horizon').value;
   const focus = document.getElementById('events-focus').value.trim();
 
-  const system = `Eres CARLA.agent, mentora de carrera en ingeniería. Lista ferias de empleo, charlas de emprendimiento, congresos de aeronáutica, defensa, robótica e inteligencia artificial. Devuelve una lista organizada por fechas que detone el nombre del evento, la localización exacta y el valor técnico o de networking que aporta a un perfil de ingeniería avanzada. Idioma español.`;
+  const system = `Eres CARLA.agent, mentora de carrera en ingeniería. Lista ferias de empleo, congresos de aeronáutica, defensa, robótica e inteligencia artificial. Devuelve una lista organizada por fechas que detone el nombre del evento, la localización exacta y el valor técnico o de networking que aporta a un perfil de ingeniería avanzada. Idioma español.`;
 
-  const query = `Eventos, hackatones o conferencias de alta ingeniería y tecnología en ${geo} planificados para los próximos ${horizon}${focus ? ' con especial enfoque en ' + focus : ''}`;
+  // Construimos la localización combinando País y Provincia de forma natural
+  let localizacion = country;
+  if (region) {
+    localizacion = `${region} (${country})`;
+  }
+
+  const query = `Eventos, hackatones o conferencias de alta ingeniería y tecnología en ${localizacion} planificados para los próximos ${horizon}${focus ? ' con especial enfoque en ' + focus : ''}`;
 
   try {
     const result = await callGemini(system, query);
@@ -220,7 +228,6 @@ async function getEvents() {
     showError('events-output', e.message);
   }
 }
-
 // ── TRACKING MODULE ───────────────────────────────────────────────────────────
 const DEFAULT_COMPANIES = [
   { name: 'Airbus', category: 'Aerospace' },
