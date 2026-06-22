@@ -121,40 +121,48 @@
         </div>
       </div>
 
-      <div class="panel hidden" id="panel-events">
-        <div class="card">
-          <div class="row-gap">
-            <div>
-              <div class="card-label">Área geográfica</div>
-              <select id="events-geo">
-                <option value="España">España</option>
-                <option value="Europa">Europa</option>
-                <option value="Internacional">Internacional</option>
-              </select>
-            </div>
-            <div>
-              <div class="card-label">Horizonte</div>
-              <select id="events-horizon">
-                <option value="3 meses">Próximos 3 meses</option>
-                <option value="6 meses">Próximos 6 meses</option>
-                <option value="1 año">Próximo año</option>
-              </select>
-            </div>
-          </div>
-          <div class="card-label" style="margin-top:0.75rem">Tema específico (opcional)</div>
-          <input type="text" id="events-focus" placeholder="Ej: defensa, aeroespacial, visión artificial..." />
-          <div style="height:0.75rem"></div>
-          <button class="btn btn-primary" onclick="getEvents()"><i class="ti ti-calendar-search"></i> Buscar eventos</button>
-        </div>
-        <div id="events-result" class="card hidden">
-          <div class="card-label">Eventos encontrados</div>
-          <div class="result-box" id="events-output"></div>
-          <div class="btn-row">
-            <button class="btn" onclick="copyText('events-output')"><i class="ti ti-copy"></i> Copiar</button>
-          </div>
-        </div>
+<!-- EVENTS -->
+<div class="panel hidden" id="panel-events">
+  <div class="card">
+    <div class="row-gap">
+      <div>
+        <div class="card-label">País</div>
+        <select id="events-country">
+          <option value="España">España</option>
+          <option value="Europa">Resto de Europa</option>
+          <option value="Internacional">Internacional</option>
+        </select>
       </div>
-
+      <div>
+        <div class="card-label">Provincia / Región</div>
+        <input type="text" id="events-region" placeholder="Ej: Sevilla, Madrid, Barcelona..." />
+      </div>
+    </div>
+    <div class="row-gap" style="margin-top:0.75rem">
+      <div>
+        <div class="card-label">Horizonte temporal</div>
+        <select id="events-horizon">
+          <option value="3 meses">Próximos 3 meses</option>
+          <option value="6 meses">Próximos 6 meses</option>
+          <option value="1 año">Próximo año</option>
+        </select>
+      </div>
+      <div>
+        <div class="card-label">Tema específico (opcional)</div>
+        <input type="text" id="events-focus" placeholder="Ej: defensa, aeroespacial, visión artificial..." />
+      </div>
+    </div>
+    <div style="height:0.75rem"></div>
+    <button class="btn btn-primary" onclick="getEvents()"><i class="ti ti-calendar-search"></i> Buscar eventos</button>
+  </div>
+  <div id="events-result" class="card hidden">
+    <div class="card-label">Eventos encontrados</div>
+    <div class="result-box" id="events-output"></div>
+    <div class="btn-row">
+      <button class="btn" onclick="copyText('events-output')"><i class="ti ti-copy"></i> Copiar</button>
+    </div>
+  </div>
+</div>
       <div class="panel hidden" id="panel-tracking">
         <div class="card">
           <div class="card-label">Empresas en seguimiento</div>
