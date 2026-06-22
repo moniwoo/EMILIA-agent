@@ -4,17 +4,15 @@
 
 function saveKey() {
   const input = document.getElementById('api-key-input');
-  if (!input) {
-    console.error("No se encontró el campo 'api-key-input' en el HTML.");
-    return;
-  }
+  if (!input) return;
   
   const key = input.value.trim();
-  if (key) {
-    localStorage.setItem('gemini_api_key', key);
+  // Eliminamos cualquier filtro de texto: si hay texto, lo guardamos directamente
+  if (key.length > 10) { 
+    localStorage.setItem('my-carla-gemini-key', key);
     launchApp();
   } else {
-    alert('Por favor, introduce una API key de Gemini válida.');
+    alert('Por favor, introduce una API key válida.');
   }
 }
 
