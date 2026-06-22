@@ -84,7 +84,6 @@ function navigateToPanel(panelId) {
 // ==========================================
 // 3. LLAMADA REAL A LA API DE GEMINI
 // ==========================================
-
 async function callGemini(promptText, outputElementId, resultCardId) {
   const apiKey = getKey();
   const outputBox = document.getElementById(outputElementId);
@@ -99,7 +98,8 @@ async function callGemini(promptText, outputElementId, resultCardId) {
   if (outputBox) outputBox.innerHTML = "<div class='loading-box'>✨ Emilia está pensando y procesando los datos...</div>";
 
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+    // URL actualizada a la API oficial v1 con el modelo estable
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -108,17 +108,25 @@ async function callGemini(promptText, outputElementId, resultCardId) {
     });
 
     const data = await response.json();
+    
+    // Si la API devuelve un error estructurado, lo capturamos aquí
+    if (data.error) {
+      console.error("Error de la API de Google:", data.error);
+      if (outputBox) outputBox.innerHTML = `Error de Google: ${data.error.message}`;
+      return;
+    }
+
     if (data.candidates && data.candidates[0].content.parts[0].text) {
       let responseText = data.candidates[0].content.parts[0].text;
       
-      // Formateo rápido para saltos de línea y negritas en el cuadro
+      // Formateo para saltos de línea y negritas
       responseText = responseText.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
       if (outputBox) outputBox.innerHTML = responseText;
     } else {
-      if (outputBox) outputBox.innerHTML = "Error: No se recibió una respuesta válida de Gemini. Revisa tu API Key.";
+      if (outputBox) outputBox.innerHTML = "Error: No se recibió una respuesta válida de Gemini. Revisa el formato de tu clave.";
     }
   } catch (error) {
-    console.error(error);
+    console.error("Error en la petición:", error);
     if (outputBox) outputBox.innerHTML = "Hubo un error al conectar con Emilia. Inténtalo de nuevo.";
   }
 }
