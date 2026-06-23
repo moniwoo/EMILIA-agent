@@ -3,13 +3,26 @@
 // ==========================================
 
 // Lista de mensajes dinámicos: todos se introducen como "Soy Emilia"
-const saludosEmilia = [
-  "Soy Emilia, tu mentora de ingeniería. ¿Qué vamos a diseñar u optimizar hoy?",
-  "Soy Emilia. Tu espacio de ideas y desarrollo técnico está completamente listo.",
-  "Soy Emilia. ¿Qué problema matemático o estructural vamos a resolver ahora?",
-  "Soy Emilia, lista para potenciar tus proyectos con inteligencia artificial.",
-  "Soy Emilia. Tu panel de control e informes técnicos están optimizados.",
-  "Soy Emilia. Vamos a estructurar y dar forma a tus soluciones de ingeniería."
+// Tus saludos personalizados con mucha personalidad
+const saludosMoni = [
+  "¡Hola, Moni!",
+  "Hellou Hellouu Moni 👋",
+  "¡Qué alegría verte de nuevo, Moni!",
+  "¡A darle caña, Moni! 🚀",
+  "¡Buenas, pichona! ¿Qué se cuece hoy?",
+  "¿Qué tal Moni?",
+  "¿Qué hubo puees Moni?",
+  "Moni, tus paneles están listos ✨"
+];
+
+function mostrarSaludoAleatorio() {
+  // Apuntamos al ID del título grande
+  const contenedorSaludo = document.getElementById("welcome-greeting");
+  if (contenedorSaludo) {
+    const indiceAleatorio = Math.floor(Math.random() * saludosMoni.length);
+    contenedorSaludo.innerHTML = saludosMoni[indiceAleatorio];
+  }
+}
 ];
 
 function mostrarSaludoAleatorio() {
