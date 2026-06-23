@@ -94,20 +94,20 @@ async function callGemini(promptText, outputElementId, resultCardId) {
   }
   
   if (resultCard) resultCard.classList.remove('hidden');
-  if (outputBox) outputBox.innerHTML = "<div class='loading-box'>✨ Emilia está pensando y procesando los datos...</div>";
+  if (outputBox) outputBox.innerHTML = "<div class='loading-box'>✨ Emilia está diseñando tu panel visual...</div>";
 
   try {
     const url = "https://generativelanguage.googleapis.com/v1/models/gemini-3.5-flash:generateContent?key=" + apiKey;
 
+    // Le inyectamos una instrucción secreta al prompt del usuario para obligar a Gemini 
+    // a estructurar la respuesta con títulos claros y formato limpio que nuestro código pueda esquematizar.
+    const enhancedPrompt = promptText + "\n\n[INSTRUCCIÓN DE DISEÑO: Organiza la respuesta usando títulos con '## ' para las secciones principales. Usa viñetas claras con '- ' o '* '. Si comparas datos, usa una estructura limpia. Usa emojis para que sea muy visual, pero no inventes URLs de imágenes].";
+
     const response = await fetch(url, {
       method: "POST",
-      headers: { 
-        "Content-Type": "application/json" 
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        contents: [{ 
-          parts: [{ text: promptText }] 
-        }]
+        contents: [{ parts: [{ text: enhancedPrompt }] }]
       })
     });
 
@@ -120,37 +120,69 @@ async function callGemini(promptText, outputElementId, resultCardId) {
     }
 
     if (data.candidates && data.candidates[0].content.parts[0].text) {
-      let text = data.candidates[0].content.parts[0].text;
+      let rawText = data.candidates[0].content.parts[0].text;
       
-      // ==========================================
-      // FORMATEADOR AVANZADO DE MARKDOWN A HTML
-      // ==========================================
-      
-      // 1. Limpiar bloques de código raros si los hay (```html ... ```)
-      text = text.replace(/```[a-z]*/g, '');
+      // Limpieza inicial de formatos markdown de código pesados
+      rawText = rawText.replace(/```[a-z]*/g, '');
 
-      // 2. Traducir Títulos Grandes (### Título o ## Título) a encabezados HTML bonitos
-      text = text.replace(/^### (.*?)$/gm, '<h3 class="output-h3">$1</h3>');
-      text = text.replace(/^## (.*?)$/gm, '<h2 class="output-h2">$1</h2>');
-      text = text.replace(/^# (.*?)$/gm, '<h1 class="output-h1">$1</h1>');
+      // Procesamos línea por línea para crear el esquema de recuadros interactivos
+      const lines = rawText.split('\n');
+      let htmlOutput = "";
+      let inBlock = false;
 
-      // 3. Traducir Negritas (**texto**)
-      text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      lines.forEach(line => {
+        let trimmed = line.trim();
+        if (!trimmed) return;
 
-      // 4. Convertir las viñetas sueltas (* o -) en listas con estilo limpio
-      text = text.replace(/^[*-] (.*?)$/gm, '<div class="output-bullet"><span class="bullet-spark">✦</span> $1</div>');
+        // Si encontramos un título de sección principal (## Título)
+        if (trimmed.startsWith('## ')) {
+          let titleText = trimmed.replace('## ', '');
+          if (inBlock) {
+            htmlOutput += `</div></div>`; // Cerramos el recuadro anterior
+          }
+          // Abrimos un recuadro visual con diseño de tarjeta ejecutiva
+          htmlOutput += `<div class="visual-section-card">
+                           <div class="visual-card-header">
+                             <span class="visual-card-dot"></span>
+                             <h2 class="visual-h2">${titleText}</h2>
+                           </div>
+                           <div class="visual-card-body">`;
+          inBlock = true;
+        }
+        // Subtítulos dentro de un recuadro (### Subtítulo)
+        else if (trimmed.startsWith('### ')) {
+          let subTitleText = trimmed.replace('### ', '');
+          htmlOutput += `<h3 class="visual-h3">${subTitleText}</h3>`;
+        }
+        // Viñetas o listas esquematizadas
+        else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+          let bulletText = trimmed.substring(2);
+          // Aplicamos negritas internas dentro de la viñeta si existen
+          bulletText = bulletText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+          htmlOutput += `<div class="visual-bullet"><span class="visual-spark">✦</span><span>${bulletText}</span></div>`;
+        }
+        // Líneas de texto plano
+        else {
+          let textLine = trimmed.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+          htmlOutput += `<p class="visual-p">${textLine}</p>`;
+        }
+      });
 
-      // 5. Convertir saltos de línea normales en huecos reales (pero evitando duplicados en títulos)
-      text = text.replace(/\n/g, '<br>');
-      text = text.replace(/(<\/h2>|<\/h3>|<h2|<h3)/g, '$1'); 
+      // Cerramos el último bloque si se quedó abierto
+      if (inBlock) {
+        htmlOutput += `</div></div>`;
+      } else {
+        // Fallback por si la respuesta no traía títulos con "##"
+        htmlOutput = rawText.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      }
 
-      if (outputBox) outputBox.innerHTML = text;
+      if (outputBox) outputBox.innerHTML = htmlOutput;
     } else {
       if (outputBox) outputBox.innerHTML = "Error: No se recibió una respuesta válida de Emilia.";
     }
   } catch (error) {
     console.error("Fallo crítico en la conexión:", error);
-    if (outputBox) outputBox.innerHTML = "Hubo un error de red al conectar con Emilia. Revisa la consola.";
+    if (outputBox) outputBox.innerHTML = "Hubo un error de red al conectar con Emilia.";
   }
 }
 
