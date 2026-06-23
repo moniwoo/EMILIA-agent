@@ -23,7 +23,7 @@ function mostrarSaludoAleatorio() {
     contenedorSaludo.innerHTML = saludosMoni[indiceAleatorio];
   }
 }
-];
+
 
 function mostrarSaludoAleatorio() {
   const contenedorSaludo = document.getElementById("mensaje-bienvenida-principal");
