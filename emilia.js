@@ -114,11 +114,11 @@ async function callGemini(promptText, outputElementId, resultCardId) {
     
     // CONTROL DE SATURACIÓN: Si el modelo 3.5 está saturado (Error 429 o mensaje de alta demanda)
     if (data.error && (data.error.code === 429 || data.error.message.includes("high demand"))) {
-      console.warn("⚠️ Modelo 3.5 saturado. Activando Plan B con Gemini 1.5-Flash...");
+      console.warn("⚠️ Modelo 3.5 saturado. Activando Plan B con Gemini 2.5-Flash...");
       if (outputBox) outputBox.innerHTML = "<div class='loading-box'>⏳ Servidor ocupado. Desviando a motor de reserva estable...</div>";
       
       // Cambiamos al modelo alternativo estable y reintentamos la petición
-      targetModel = "gemini-1.5-flash";
+      targetModel = "gemini-2.5-flash";
       url = `https://generativelanguage.googleapis.com/v1/models/${targetModel}:generateContent?key=${apiKey}`;
       
       response = await fetch(url, {
