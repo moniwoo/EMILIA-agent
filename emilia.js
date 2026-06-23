@@ -83,7 +83,6 @@ function navigateToPanel(panelId) {
 // ==========================================
 // 3. LLAMADA DE RED UNIFICADA (MÁXIMA ESTABILIDAD)
 // ==========================================
-
 async function callGemini(promptText, outputElementId, resultCardId) {
   const apiKey = getKey();
   const outputBox = document.getElementById(outputElementId);
@@ -98,7 +97,6 @@ async function callGemini(promptText, outputElementId, resultCardId) {
   if (outputBox) outputBox.innerHTML = "<div class='loading-box'>✨ Emilia está pensando y procesando los datos...</div>";
 
   try {
-    // URL e Identificador oficial de producción para evitar errores 404
     const url = "https://generativelanguage.googleapis.com/v1/models/gemini-3.5-flash:generateContent?key=" + apiKey;
 
     const response = await fetch(url, {
@@ -122,11 +120,31 @@ async function callGemini(promptText, outputElementId, resultCardId) {
     }
 
     if (data.candidates && data.candidates[0].content.parts[0].text) {
-      let responseText = data.candidates[0].content.parts[0].text;
+      let text = data.candidates[0].content.parts[0].text;
       
-      // Formateo visual para saltos de línea y negritas en la interfaz HTML
-      responseText = responseText.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      if (outputBox) outputBox.innerHTML = responseText;
+      // ==========================================
+      // FORMATEADOR AVANZADO DE MARKDOWN A HTML
+      // ==========================================
+      
+      // 1. Limpiar bloques de código raros si los hay (```html ... ```)
+      text = text.replace(/```[a-z]*/g, '');
+
+      // 2. Traducir Títulos Grandes (### Título o ## Título) a encabezados HTML bonitos
+      text = text.replace(/^### (.*?)$/gm, '<h3 class="output-h3">$1</h3>');
+      text = text.replace(/^## (.*?)$/gm, '<h2 class="output-h2">$1</h2>');
+      text = text.replace(/^# (.*?)$/gm, '<h1 class="output-h1">$1</h1>');
+
+      // 3. Traducir Negritas (**texto**)
+      text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+      // 4. Convertir las viñetas sueltas (* o -) en listas con estilo limpio
+      text = text.replace(/^[*-] (.*?)$/gm, '<div class="output-bullet"><span class="bullet-spark">✦</span> $1</div>');
+
+      // 5. Convertir saltos de línea normales en huecos reales (pero evitando duplicados en títulos)
+      text = text.replace(/\n/g, '<br>');
+      text = text.replace(/(<\/h2>|<\/h3>|<h2|<h3)/g, '$1'); 
+
+      if (outputBox) outputBox.innerHTML = text;
     } else {
       if (outputBox) outputBox.innerHTML = "Error: No se recibió una respuesta válida de Emilia.";
     }
@@ -135,6 +153,7 @@ async function callGemini(promptText, outputElementId, resultCardId) {
     if (outputBox) outputBox.innerHTML = "Hubo un error de red al conectar con Emilia. Revisa la consola.";
   }
 }
+
 
 // ==========================================
 // 4. FUNCIONES INTERNAS DE PANELES
