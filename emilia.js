@@ -16,9 +16,9 @@ const saludosMoni = [
 ];
 
 function mostrarSaludoAleatorio() {
-  // Apuntamos al ID del título grande
   const contenedorSaludo = document.getElementById("welcome-greeting");
   if (contenedorSaludo) {
+    contenedorSaludo.innerHTML = ""; // Limpiar glitch visual previo
     const indiceAleatorio = Math.floor(Math.random() * saludosMoni.length);
     contenedorSaludo.innerHTML = saludosMoni[indiceAleatorio];
   }
@@ -69,24 +69,30 @@ window.addEventListener('DOMContentLoaded', () => {
 // ==========================================
 
 function switchPanel(panelId, element) {
-  if (panelId === 'welcome' || panelId === 'inicio') {
-    mostrarSaludoAleatorio();
-    }
   const welcome = document.getElementById('welcome-screen');
-  if (welcome) welcome.style.display = 'none';
-  
   const panels = document.querySelectorAll('.panel');
-  panels.forEach(p => p.classList.add('hidden'));
   
+  // 1. Manejo exclusivo de la pantalla de bienvenida
+  if (panelId === 'welcome' || panelId === 'inicio') {
+    if (welcome) welcome.style.display = 'block';
+    mostrarSaludoAleatorio();
+  } else {
+    if (welcome) welcome.style.display = 'none';
+  }
+  
+  // 2. Ocultar todos los paneles y mostrar el seleccionado
+  panels.forEach(p => p.classList.add('hidden'));
   const targetPanel = document.getElementById(`panel-${panelId}`);
   if (targetPanel) {
     targetPanel.classList.remove('hidden');
   }
   
+  // 3. Actualizar estado de navegación
   const items = document.querySelectorAll('.nav-item');
   items.forEach(item => item.classList.remove('active'));
   if (element) element.classList.add('active');
   
+  // 4. Actualizar textos de la barra superior
   const titles = {
     'post': { t: 'Redactar Post', s: 'Crea contenido con tu propia voz' },
     'trends': { t: 'Análisis de Tendencias', s: 'Sectores tecnológicos e IA' },
@@ -100,6 +106,7 @@ function switchPanel(panelId, element) {
     document.getElementById('topbar-sub').innerText = titles[panelId].s;
   }
 }
+
 
 function navigateToPanel(panelId) {
   const navItem = document.querySelector(`.nav-item[data-panel="${panelId}"]`);
