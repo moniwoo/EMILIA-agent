@@ -530,31 +530,3 @@ body {
   font-size: 0.75rem;
   letter-spacing: 0.05em;
 }
-/* ==========================================
-   ESTILO REFINADO PARA EL MENSAJE DINÁMICO
-   ========================================== */
-
-.welcome-title-pink {
-  color: #d12975; /* El tono magenta/rosa de tu paleta */
-  font-size: 2.6rem;
-  font-weight: 800;
-  margin-bottom: 0.75rem;
-  letter-spacing: -0.03em;
-}
-
-.welcome-dynamic-text {
-  color: #684a58; /* Un gris violáceo/rosado oscuro, muy elegante, que no es negro puro */
-  font-size: 1.15rem;
-  line-height: 1.6;
-  font-weight: 500;
-  max-width: 450px;
-  margin: 0 auto 2.5rem auto; /* Le da aire por abajo para separar las tarjetas */
-  padding: 0 1rem;
-  animation: fadeInEffect 0.5s ease-in-out;
-}
-
-/* Efecto suave para cuando cambie la frase al hacer clic */
-@keyframes fadeInEffect {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
