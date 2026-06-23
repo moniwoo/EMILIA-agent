@@ -372,31 +372,30 @@ function getTracking() {
   const prompt = `Realiza un informe estratégico de monitorización de mercado enfocado en las siguientes empresas: ${companies.join(', ')}. El objetivo prioritario de este informe es: "${focus}".`;
   callGemini(prompt, 'tracking-output', 'tracking-result');
 }
-
 // ==========================================
 // 6. FUNCIONES DE CONVERSIÓN Y COPIADO
 // ==========================================
 
 function trendToPost() {
   const trendsContent = document.getElementById('trends-output').innerText;
+  const postIdeaInput = document.getElementById('post-idea');
+  
+  if (postIdeaInput) {
+    postIdeaInput.value = `Basándote en estas tendencias de mercado:\n\n${trendsContent}\n\nRedacta un post estratégico analizando el impacto de esto en la ingeniería.`;
+  }
+  
+  // Navegamos al panel después de haber cargado el texto
   navigateToPanel('post');
-  document.getElementById('post-idea').value = `Basándote en estas tendencias de mercado:\n\n${trendsContent}\n\nRedacta un post estratégico analizando el impacto de esto en la ingeniería.`;
 }
 
 function trackingToPost() {
   const trackingContent = document.getElementById('tracking-output').innerText;
+  const postIdeaInput = document.getElementById('post-idea');
+  
+  if (postIdeaInput) {
+    postIdeaInput.value = `A raíz de este análisis estratégico de empresas:\n\n${trackingContent}\n\nEscribe una reflexión profesional para LinkedIn sobre los perfiles más demandados y las oportunidades detectadas.`;
+  }
+  
+  // Navegamos al panel después de haber cargado el texto
   navigateToPanel('post');
-  document.getElementById('post-idea').value = `A raíz de este análisis estratégico de empresas:\n\n${trackingContent}\n\nEscribe una reflexión profesional para LinkedIn sobre los perfiles más demandados y las oportunidades detectadas.`;
 }
-
-function copyText(elementId) {
-  const element = document.getElementById(elementId);
-  if (!element) return;
-  const text = element.innerText || element.value;
-  navigator.clipboard.writeText(text).then(() => alert('¡Contenido copiado al portapapeles con éxito!'));
-}
-
-// Asegurar que se ejecute al cargar el documento
-document.addEventListener("DOMContentLoaded", () => {
-  mostrarSaludoAleatorio();
-});
