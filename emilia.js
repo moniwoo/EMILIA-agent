@@ -52,12 +52,8 @@ function launchApp() {
   if (overlay) overlay.style.display = 'none';
   if (appContainer) appContainer.style.display = 'flex';
   
-  // ACTIVACIÓN DEL SALUDO ALEATORIO AL ARRANCAR
-  mostrarSaludoAleatorio();
-  
   initCompanies();
 }
-
 window.addEventListener('DOMContentLoaded', () => {
   const key = getKey();
   if (key) {
@@ -75,7 +71,6 @@ function switchPanel(panelId, element) {
   // 1. Manejo exclusivo de la pantalla de bienvenida
   if (panelId === 'welcome' || panelId === 'inicio') {
     if (welcome) welcome.style.display = 'block';
-    mostrarSaludoAleatorio();
   } else {
     if (welcome) welcome.style.display = 'none';
   }
@@ -405,14 +400,3 @@ function copyText(elementId) {
 document.addEventListener("DOMContentLoaded", () => {
   mostrarSaludoAleatorio();
 });
-
-// Plan B: Ejecutar la función repetidamente cada vez que se detecte el panel visible
-// por si el login tarda un poquito en quitarse.
-const intervaloSaluado = setInterval(() => {
-  const contenedorSaludo = document.getElementById("welcome-greeting");
-  // Si el contenedor ya existe y la app no está oculta, tiramos el saludo y limpiamos el bucle
-  if (contenedorSaludo && document.getElementById("app").style.display !== "none") {
-    mostrarSaludoAleatorio();
-    clearInterval(intervaloSaluado);
-  }
-}, 300);
